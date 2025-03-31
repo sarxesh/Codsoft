@@ -1,27 +1,37 @@
 import random
 import string
 
-def generate_password(length=12):
-    lower_case = string.ascii_lowercase
-    upper_case = string.ascii_uppercase
+def generate_password(length):
+    lowercase = string.ascii_lowercase
+    uppercase = string.ascii_uppercase
     digits = string.digits
-    special_chars = "!@#$&*()_"
-
-    all_characters = lower_case + upper_case + digits + special_chars
-
+    symbols = string.punctuation
+    
+    all_chars = lowercase + uppercase + digits + symbols
+    
     password = [
-        random.choice(lower_case),
-        random.choice(upper_case),
+        random.choice(lowercase),
+        random.choice(uppercase),
         random.choice(digits),
-        random.choice(special_chars)
+        random.choice(symbols)
     ]
-
-    password += random.choices(all_characters, k=length-4)
-
+    
+    for _ in range(length - 4):
+        password.append(random.choice(all_chars))
+    
     random.shuffle(password)
-
+    
     return ''.join(password)
 
-if __name__ == "__main__":
-    print("Generated password is")
-    print(generate_password(length=10))
+while True:
+    try:
+        length = int(input("Enter the desired password length (minimum 8 characters): "))
+        if length < 8:
+            print("Password length should be at least 8 characters for security.")
+        else:
+            break
+    except ValueError:
+        print("Please enter a valid number.")
+
+password = generate_password(length)
+print("\nGenerated Password:", password)
